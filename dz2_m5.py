@@ -1,4 +1,5 @@
 import re
+from typing import Callable
 
 text = ("Загальний дохід працівника складається з декількох частин: "
         "1000.01 як основний дохід, доповнений додатковими надходженнями "
@@ -9,7 +10,7 @@ def generator_numbers(text: str):
     if not isinstance(text, str):
         raise TypeError("Вхід має бути рядком!")
     
-    pattern = r"\b\d+(?:\.\d+)?\b"  # Використовуємо регулярний вираз для чисел
+    pattern = r"\b\d+(?:\.\d+)?\b"  # Регулярний вираз для чисел
 
     try:
         matches = re.findall(pattern, text)
@@ -21,21 +22,24 @@ def generator_numbers(text: str):
     except Exception as e:
         print(f"Помилка в регулярному виразі: {e}")
 
-def sum_profit(text: str):
+def sum_profit(text: str, func: Callable):
     # Перевіряємо, чи є вхідний параметр рядком
     if not isinstance(text, str):
         raise TypeError("Вхід має бути рядком!")
+    # Перевіряємо, чи func є callable
+    if not callable(func):
+        raise TypeError("Другий аргумент має бути callable!")
     
     try:
-        return sum(generator_numbers(text))
+        return sum(func(text))  # Використовуємо передану функцію для обробки text
     except Exception as e:
         print(f"Помилка під час обчислення суми: {e}")
-        return 0  # Якщо виникла помилка, повертаємо 0 як значення
- # Якщо скрипт виконується безпосередньо, а не імпортується як модуль
+        return 0  # Якщо виникла помилка, повертаємо 0
+
+# Якщо скрипт виконується безпосередньо
 if __name__ == "__main__":
-# Використання
     try:
-     total_income = sum_profit(text)
-     print(f"Загальний дохід: {total_income}")
+        total_income = sum_profit(text, generator_numbers)  # Передаємо текст і генератор
+        print(f"Загальний дохід: {total_income}")
     except TypeError as e:
-     print(f"Помилка: {e}")
+        print(f"Помилка: {e}")
