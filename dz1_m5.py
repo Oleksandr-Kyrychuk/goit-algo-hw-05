@@ -1,6 +1,6 @@
-# Функція для кешування чисел Фібоначчі
-def caching_fibonacci(): 
+def caching_fibonacci():
     cache = {}  # Ініціалізація порожнього словника для кешування
+
     def fibonacci(n):  # Внутрішня функція для обчислення чисел Фібоначчі
         try:
             if not isinstance(n, int):  # Перевірка, чи є аргумент цілим числом
@@ -14,7 +14,9 @@ def caching_fibonacci():
                 return 1
             elif n in cache:  # Перевіряємо, чи є значення вже в кеші
                 return cache[n]
-            cache[n] = fibonacci(n - 1) + fibonacci(n - 2)  # Якщо значення немає в кеші, обчислюємо та зберігаємо його
+            
+            # Якщо значення немає в кеші, обчислюємо та зберігаємо його
+            cache[n] = fibonacci(n - 1) + fibonacci(n - 2)
             return cache[n]
         except TypeError as e:
             print(f"Помилка типу: {e}")
@@ -25,14 +27,13 @@ def caching_fibonacci():
         except Exception as e:
             print(f"Невідома помилка: {e}")
             return None
-            
-    return fibonacci, cache  # Повертаємо функцію fibonacci та словник cache для доступу до кешу
+    
+    return fibonacci  # Повертаємо тільки внутрішню функцію
 
-# Якщо скрипт виконується безпосередньо, а не імпортується як модуль
+# Якщо скрипт виконується безпосередньо
 if __name__ == "__main__":
-    fib, cache = caching_fibonacci()  # Викликаємо caching_fibonacci, отримуємо функцію fibonacci та доступ до кешу
-    print(fib(10))  # Викликаємо fibonacci для обчислення 10-го числа Фібоначчі
-    print(cache)  # Виводимо кеш, щоб побачити збережені значення
+    fib = caching_fibonacci()  # Отримуємо внутрішню функцію
+    print(fib(10))  # Обчислюємо 10-те число Фібоначчі
 
     # Тестування помилок
     print(fib(-5))  # Тестуємо від'ємне число
