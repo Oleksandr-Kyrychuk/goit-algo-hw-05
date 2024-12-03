@@ -20,31 +20,20 @@ def parse_input(user_input):
 
 @input_error
 def add_contact(args, contacts):
-    if len(args) != 2:
-        raise ValueError("Give me name and phone please.")
-    name, phone = args
+    name, phone = args  # Помилка буде автоматично оброблена, якщо args некоректні
     contacts[name] = phone
     return "Contact added"
 
 @input_error
 def change_contact(args, contacts):
-    if len(args) != 2:
-        raise ValueError("Give me name and phone please.")
-    name, phone = args
-    if name not in contacts:
-        raise KeyError(name)
-    contacts[name] = phone
+    name, phone = args  # Аналогічно, декоратор обробить помилку
+    contacts[name] = phone  # Якщо ключа немає, KeyError буде оброблено декоратором
     return f"Contact {name} changed."
 
 @input_error
 def phone_username(args, contacts):
-    if len(args) != 1:
-        raise ValueError("Give me name, please.")
-    name = args[0]
-    if name in contacts:
-        return contacts[name]
-    else:
-        raise KeyError(name)
+    name = args[0]  # IndexError буде оброблено декоратором
+    return contacts[name]  # Якщо контакту немає, KeyError буде оброблено декоратором
 
 @input_error
 def all_contacts(contacts):
